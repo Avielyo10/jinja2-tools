@@ -19,18 +19,24 @@ def main():
 
 
 @main.command()
+@click.option('--stream', '-s', type=click.File('r'))
 @click.option('--data', '-d', type=click.Path(exists=True))
 @click.option('--template', '-t', type=click.Path(exists=True))
 @click.option('--verbose', '-v', is_flag=True)
 @click.option('--trim-blocks', '-tb', default=True, is_flag=True)
 @click.option('--lstrip-blocks', '-lb', default=True, is_flag=True)
 @click.option('--output', '-o', type=click.Path())
-def render(data, template, verbose, trim_blocks, lstrip_blocks, output):
+def render(stream, data, template, verbose, trim_blocks, lstrip_blocks, output):
     if data is not None:
         with open(data, 'r') as input_data_file:
             data = yaml.load(input_data_file.read(), Loader=yaml.FullLoader)
             print_verbose({'title': '[Data]', 'content': json.dumps(
                 data, indent=2), 'verbose': verbose})
+
+    if stream is not None and data is None:
+        data = yaml.load(stream.read(), Loader=yaml.FullLoader)
+        print_verbose({'title': '[Data]', 'content': json.dumps(
+            data, indent=2), 'verbose': verbose})
 
     if template is not None:
         with open(template, 'r') as input_template_file:
