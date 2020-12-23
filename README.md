@@ -2,6 +2,12 @@
 
 Use Jinja2 templates via cli
 
+## Install
+
+```
+$ pip install jinja2-tools
+```
+
 ## Usage
 
 ```
