@@ -13,6 +13,7 @@ Options:
   -v, --verbose
   -tb, --trim-blocks    Disable trim blocks
   -lb, --lstrip-blocks  Disable lstrip blocks
+  -o, --output          PATH for output
   --help                Show this message and exit.
 ```
 
@@ -72,6 +73,7 @@ ip access-list extended al-hq-in
     ]
   }
 }
+
 ---------- [Template] ----------
 {% for acl, acl_lines in access_lists.items() %}(1)
 ip access-list extended {{ acl }}
@@ -85,6 +87,7 @@ ip access-list extended {{ acl }}
 {% endfor %}(7)
 
 # All ACLs have been generated
+
 (1)
 ip access-list extended al-hq-in
 (2)
