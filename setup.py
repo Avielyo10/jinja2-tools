@@ -17,7 +17,9 @@ setuptools.setup(
         'Click',
         'ansicolors',
         'PyYAML',
-        'Jinja2'
+        'Jinja2',
+        'requests',
+        'validators'
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
