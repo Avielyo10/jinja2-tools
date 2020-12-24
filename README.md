@@ -14,13 +14,17 @@ $ pip install jinja2-tools
 Usage: jinja render [OPTIONS]
 
 Options:
-  -d, --data            PATH to YAML or JSON data file
-  -t, --template        PATH to any file that uses Jinja
+  -d, --data TEXT          PATH to YAML or JSON data file, URL or '-' for
+                           stdin
+
+  -t, --template TEXT      PATH to any file that uses Jinja, URL or '-' for
+                           stdin
+
   -v, --verbose
-  -tb, --trim-blocks    Disable trim blocks
-  -lb, --lstrip-blocks  Disable lstrip blocks
-  -o, --output          PATH for output
-  --help                Show this message and exit.
+  -tb, --no-trim-blocks    Disable trim blocks
+  -lb, --no-lstrip-blocks  Disable lstrip blocks
+  -o, --output PATH        PATH for output, stdout by default
+  --help                   Show this message and exit.
 ```
 
 ## Whitespace Control
