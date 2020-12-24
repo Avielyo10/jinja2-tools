@@ -21,6 +21,15 @@ def load_yaml(data):
     return yaml.load(data, Loader=yaml.FullLoader)
 
 
+def validate_json(j):
+    try:
+        ans = json.loads(j)
+    except json.decoder.JSONDecodeError:
+        return j
+    else:
+        return ans
+
+
 def input_handler(data):
     if data == '-':
         return sys.stdin.read()
@@ -39,6 +48,20 @@ class Base:
     def __init__(self, data, verbose):
         self.data = data
         self.verbose = verbose
+
+
+class EnvVar(Base):
+    def __init__(self, data, verbose):
+        Base.__init__(self, data, verbose)
+        self.data = dict(env.split('=') for env in self.data)
+        for val in self.data:
+            self.data[val] = validate_json(self.data[val])
+ 
+
+    def get_env(self):
+        print_verbose({'title': '[EnvVars]', 'content': json.dumps(
+            self.data, indent=2), 'verbose': self.verbose})
+        return self.data
 
 
 class Data(Base):
