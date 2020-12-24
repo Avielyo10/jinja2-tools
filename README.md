@@ -24,7 +24,7 @@ Options:
   -tb, --no-trim-blocks    Disable trim blocks.
   -lb, --no-lstrip-blocks  Disable lstrip blocks.
   -o, --output PATH        PATH for output, stdout by default.
-  -e, --envvar TEXT        key value pair separated by '='. 'value' will be
+  -e, --extra-var TEXT     key value pair separated by '='. 'value' will be
                            treated as JSON or as a string in case of JSON
                            decoding error. This will take precedence over
                            'data'.
@@ -118,13 +118,13 @@ Options:
   # All ACLs have been generated
   ```
 
-* Pass the data using multiple env vars:
+* Pass the data using multiple extra vars:
   ```
   ➜ jinja render -t examples/template.sh \
   -e access_lists='{"al-hq-in": [{"action": "remark", "text": "Allow traffic from hq to local office"}, {"action": "permit", "src": "10.0.0.0/22", "dst": "10.100.0.0/24"}]}' \
   -e message=world \
   -v
-  ---------- [EnvVars] ----------
+  ---------- [ExtraVars] ----------
   {
     "access_lists": {
       "al-hq-in": [

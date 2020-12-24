@@ -1,6 +1,6 @@
 import click
 
-from .handlers import Data, Template, EnvVar
+from .handlers import Data, Template, ExtraVar
 from .exceptions import InvalidInput
 
 
@@ -17,22 +17,22 @@ def main():
 @click.option('--no-trim-blocks', '-tb', default=True, is_flag=True, help='Disable trim blocks.')
 @click.option('--no-lstrip-blocks', '-lb', default=True, is_flag=True, help='Disable lstrip blocks.')
 @click.option('--output', '-o', type=click.Path(), help='PATH for output, stdout by default.')
-@click.option('--envvar', '-e', multiple=True, help="key value pair separated by '='. "
+@click.option('--extra-var', '-e', multiple=True, help="key value pair separated by '='. "
               "'value' will be treated as JSON or as a string in case of JSON decoding error. "
               "This will take precedence over 'data'.")
-def render(data, template, verbose, no_trim_blocks, no_lstrip_blocks, output, envvar):
+def render(data, template, verbose, no_trim_blocks, no_lstrip_blocks, output, extra_var):
     if data == '-' and template == '-':
         raise InvalidInput()
 
     if data is not None:
         data = Data(data, verbose).get_data()
 
-    if envvar is not None:
-        env = EnvVar(envvar, verbose).get_env()
+    if extra_var is not None:
+        extra_var = ExtraVar(extra_var, verbose).get_extra_vars()
         if data is not None:
-            data.update(env)
+            data.update(extra_var)
         else:
-            data = env
+            data = extra_var
 
     if template is not None:
         out = Template(template, verbose, data, no_trim_blocks,

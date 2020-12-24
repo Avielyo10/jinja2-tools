@@ -50,16 +50,16 @@ class Base:
         self.verbose = verbose
 
 
-class EnvVar(Base):
+class ExtraVar(Base):
     def __init__(self, data, verbose):
         Base.__init__(self, data, verbose)
-        self.data = dict(env.split('=') for env in self.data)
-        for val in self.data:
-            self.data[val] = validate_json(self.data[val])
+        self.data = dict(var.split('=') for var in self.data)
+        for var in self.data:
+            self.data[var] = validate_json(self.data[var])
  
 
-    def get_env(self):
-        print_verbose({'title': '[EnvVars]', 'content': json.dumps(
+    def get_extra_vars(self):
+        print_verbose({'title': '[ExtraVars]', 'content': json.dumps(
             self.data, indent=2), 'verbose': self.verbose})
         return self.data
 
