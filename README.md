@@ -24,9 +24,10 @@ Options:
   -tb, --no-trim-blocks    Disable trim blocks.
   -lb, --no-lstrip-blocks  Disable lstrip blocks.
   -o, --output PATH        PATH for output, stdout by default.
-  -e, --envvar TEXT        key value pair separated by '='.'value' will be
+  -e, --envvar TEXT        key value pair separated by '='. 'value' will be
                            treated as JSON or as a string in case of JSON
-                           decoding error.
+                           decoding error. This will take precedence over
+                           'data'.
 
   --help                   Show this message and exit.
 ```
@@ -39,7 +40,7 @@ Options:
 
 * Use path from the filesystem for data & template:
   ```
-  ➜  jinja2-tools git:(master) jinja render -d examples/data.yaml -t examples/template.sh
+  ➜ jinja render -d examples/data.yaml -t examples/template.sh
   (1)
   ip access-list extended al-hq-in
   (2)
@@ -54,7 +55,7 @@ Options:
 
 * Use stdin for data & URL for template, also disable trim blocks & lstrip blocks:
   ```
-  ➜  jinja2-tools git:(master) jinja render -d - -t https://raw.githubusercontent.com/Avielyo10/jinja2-tools/master/examples/template.sh -lb -tb < examples/data.yaml
+  ➜ jinja render -d - -t https://raw.githubusercontent.com/Avielyo10/jinja2-tools/master/examples/template.sh -lb -tb < examples/data.yaml
   (1)
   ip access-list extended al-hq-in
     (2)
@@ -73,7 +74,7 @@ Options:
 
 * Verbose:
   ```
-  ➜  jinja2-tools git:(master) jinja render -d examples/data.yaml -t examples/template.sh -v     
+  ➜ jinja render -d examples/data.yaml -t examples/template.sh -v     
   ---------- [Data] ----------
   {
     "access_lists": {
@@ -119,7 +120,10 @@ Options:
 
 * Pass the data using multiple env vars:
   ```
-  ➜  jinja2-tools git:(master) jinja render -t examples/template.sh -e access_lists='{"al-hq-in": [{"action": "remark", "text": "Allow traffic from hq to local office"}, {"action": "permit", "src": "10.0.0.0/22", "dst": "10.100.0.0/24"}]}' -e message=world -v
+  ➜ jinja render -t examples/template.sh \
+  -e access_lists='{"al-hq-in": [{"action": "remark", "text": "Allow traffic from hq to local office"}, {"action": "permit", "src": "10.0.0.0/22", "dst": "10.100.0.0/24"}]}' \
+  -e message=world \
+  -v
   ---------- [EnvVars] ----------
   {
     "access_lists": {

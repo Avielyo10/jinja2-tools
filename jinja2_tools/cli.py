@@ -17,8 +17,9 @@ def main():
 @click.option('--no-trim-blocks', '-tb', default=True, is_flag=True, help='Disable trim blocks.')
 @click.option('--no-lstrip-blocks', '-lb', default=True, is_flag=True, help='Disable lstrip blocks.')
 @click.option('--output', '-o', type=click.Path(), help='PATH for output, stdout by default.')
-@click.option('--envvar', '-e', multiple=True, help="key value pair separated by '='."
-              "'value' will be treated as JSON or as a string in case of JSON decoding error.")
+@click.option('--envvar', '-e', multiple=True, help="key value pair separated by '='. "
+              "'value' will be treated as JSON or as a string in case of JSON decoding error. "
+              "This will take precedence over 'data'.")
 def render(data, template, verbose, no_trim_blocks, no_lstrip_blocks, output, envvar):
     if data == '-' and template == '-':
         raise InvalidInput()
