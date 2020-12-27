@@ -58,6 +58,8 @@ def render(data, template, verbose, no_trim_blocks, no_lstrip_blocks, output, ex
             data = extra_var
 
     if template is not None:
+        options = {'no_trim_blocks': no_trim_blocks,
+                   'no_lstrip_blocks': no_lstrip_blocks}
         if validate_is_dir(template):
             for root, dirs, files in os.walk(template):
                 # Skip hidden directories
@@ -66,12 +68,11 @@ def render(data, template, verbose, no_trim_blocks, no_lstrip_blocks, output, ex
 
                 for file in files:
                     template_path = os.path.join(root, file)
-                    out = Template(template_path, verbose, data, no_trim_blocks,
-                                   no_lstrip_blocks).get_rendered_template()
+                    out = Template(template_path, verbose, data,
+                                   options).get_rendered_template()
                     output_template(
                         content=out, output_path=output,
                         dir=os.path.relpath(template_path, template))
         else:
-            out = Template(template, verbose, data, no_trim_blocks,
-                           no_lstrip_blocks).get_rendered_template()
+            out = Template(template, verbose, data, options).get_rendered_template()
             output_template(out, output)
