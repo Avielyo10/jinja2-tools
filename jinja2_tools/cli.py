@@ -15,7 +15,8 @@ def main():
 
 @main.command()
 @click.option('--data', '-d', help="PATH to YAML or JSON data file, URL or '-' for stdin.")
-@click.option('--template', '-t', help="PATH to any file that uses Jinja, URL or '-' for stdin.")
+@click.option('--template', '-t', help="PATH to directory or to"
+              " any file that uses Jinja, URL or '-' for stdin.")
 @click.option('--verbose', '-v', is_flag=True)
 @click.option('--no-trim-blocks', '-tb', default=True, is_flag=True, help='Disable trim blocks.')
 @click.option('--no-lstrip-blocks', '-lb', default=True, is_flag=True, help='Disable lstrip blocks.')
@@ -40,7 +41,7 @@ def render(data, template, verbose, no_trim_blocks, no_lstrip_blocks, output, ex
     if template is not None:
         if validate_is_dir(template):
             for root, dirs, files in os.walk(template):
-                # Skip hidden directories 
+                # Skip hidden directories
                 files = [file for file in files if not file[0] == '.']
                 dirs[:] = [dir for dir in dirs if not dir[0] == '.']
 

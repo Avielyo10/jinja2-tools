@@ -12,13 +12,12 @@ $ pip install jinja2-tools
 
 ```
 Usage: jinja render [OPTIONS]
-
 Options:
   -d, --data TEXT          PATH to YAML or JSON data file, URL or '-' for
                            stdin.
 
-  -t, --template TEXT      PATH to any file that uses Jinja, URL or '-' for
-                           stdin.
+  -t, --template TEXT      PATH to directory or to any file that uses Jinja,
+                           URL or '-' for stdin.
 
   -v, --verbose
   -tb, --no-trim-blocks    Disable trim blocks.
