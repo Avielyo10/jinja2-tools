@@ -166,3 +166,26 @@ Options:
   hello world!
   # All ACLs have been generated
   ```
+
+* Use directory option
+  ```
+  ➜ jinja render -d examples/data.yaml -t examples/ -o test/
+  ➜ tree test/
+  test/
+  ├── data.json
+  ├── data.yaml
+  └── template.sh
+
+  0 directories, 3 files
+  ➜ cat test/template.sh
+  (1)
+  ip access-list extended al-hq-in
+  (2)
+      (3)    remark Allow traffic from hq to local office
+      (4)(2)
+      (3)    permit 10.0.0.0/22 10.100.0.0/24
+      (5)(6)
+  (7)
+  hello jinja!
+  # All ACLs have been generated
+  ```
