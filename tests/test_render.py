@@ -1,4 +1,6 @@
+import os
 import requests
+import shutil
 
 from click.testing import CliRunner
 from jinja2_tools.cli import main as jinja
@@ -100,3 +102,37 @@ def test_render_with_extra_vars_override():
 
     assert result.exit_code == 0
     assert 'hello world!' in result.output
+
+
+def test_render_with_directory():
+    runner = CliRunner()
+    test_dir = 'test/'
+    result = runner.invoke(
+        jinja, ['render', '-d', 'examples/data.yaml', '-t', 'examples/', '-o', test_dir])
+
+    assert result.exit_code == 0
+    assert len(os.listdir(test_dir)) == 3
+    try:
+        shutil.rmtree(test_dir)
+    except FileNotFoundError as err:
+        print(err.strerror)
+
+
+def test_invalid_input():
+    runner = CliRunner()
+    yaml_result = runner.invoke(
+        jinja, ['render', '-d', '-', '-t', '-'])
+    assert yaml_result.exit_code == 127
+
+
+def test_invalid_data_type():
+    runner = CliRunner()
+    test_dir = 'test/'
+    result = runner.invoke(
+        jinja, ['render', '-d', 'examples/', '-t', 'examples/', '-o', test_dir])
+
+    assert result.exit_code == 128
+    try:
+        shutil.rmtree(test_dir)
+    except OSError:
+        pass

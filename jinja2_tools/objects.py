@@ -1,4 +1,5 @@
 import json
+import sys
 
 from .exceptions import InvalidDataType
 from .validators import validate_json
@@ -35,7 +36,8 @@ class Data(Base):
         try:
             ih = input_handler(self.data)
         except InvalidDataType as err:
-            print(err.message)
+            print(err.message, file=sys.stderr)
+            sys.exit(128)
         else:
             self.data = load_yaml(ih)
             print_verbose({'title': '[Data]', 'content': json.dumps(
@@ -57,13 +59,14 @@ class Template(Base):
             else:
                 return self.template.render()
         except exceptions.UndefinedError as err:
-            print(red('[ERROR]'), err.message)
+            print(red('[ERROR]'), err.message, file=sys.stderr)
 
     def get_rendered_template(self):
         try:
             ih = input_handler(self.template)
         except InvalidDataType as err:
-            print(err.message)
+            print(err.message, file=sys.stderr)
+            sys.exit(128)
         else:
             print_verbose(
                 {'title': '[Template]', 'content': ih, 'verbose': self.verbose})

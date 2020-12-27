@@ -1,5 +1,7 @@
 import click
 import os
+import sys
+import traceback
 
 from .objects import Data, Template, ExtraVar
 from .exceptions import InvalidInput
@@ -26,7 +28,11 @@ def main():
               "This will take precedence over 'data'.")
 def render(data, template, verbose, no_trim_blocks, no_lstrip_blocks, output, extra_var):
     if data == '-' and template == '-':
-        raise InvalidInput()
+        try:
+            raise InvalidInput()
+        except:
+            traceback.print_exc()
+            sys.exit(127)
 
     if data is not None:
         data = Data(data, verbose).get_data()
