@@ -1,7 +1,11 @@
-import click
+"""
+jinja cli
+"""
+
 import os
 import sys
 import traceback
+import click
 
 from .objects import Data, Template, ExtraVar
 from .exceptions import InvalidInput
@@ -12,6 +16,9 @@ from .util import output_template
 @click.group()
 @click.version_option()
 def main():
+    """
+    Main click group for future commands
+    """
     pass
 
 
@@ -21,12 +28,18 @@ def main():
               " any file that uses Jinja, URL or '-' for stdin.")
 @click.option('--verbose', '-v', is_flag=True)
 @click.option('--no-trim-blocks', '-tb', default=True, is_flag=True, help='Disable trim blocks.')
-@click.option('--no-lstrip-blocks', '-lb', default=True, is_flag=True, help='Disable lstrip blocks.')
+@click.option('--no-lstrip-blocks', '-lb', default=True, is_flag=True,
+              help='Disable lstrip blocks.')
 @click.option('--output', '-o', type=click.Path(), help='PATH for output, stdout by default.')
 @click.option('--extra-var', '-e', multiple=True, help="key value pair separated by '='. "
               "'value' will be treated as JSON or as a string in case of JSON decoding error. "
               "This will take precedence over 'data'.")
 def render(data, template, verbose, no_trim_blocks, no_lstrip_blocks, output, extra_var):
+    """
+    Render templates using Jinja2
+    You can render a template (or a directory) from URL, PATH or stdin,
+    using data from a URL, file or stdin.
+    """
     if data == '-' and template == '-':
         try:
             raise InvalidInput()
@@ -56,7 +69,8 @@ def render(data, template, verbose, no_trim_blocks, no_lstrip_blocks, output, ex
                     out = Template(template_path, verbose, data, no_trim_blocks,
                                    no_lstrip_blocks).get_rendered_template()
                     output_template(
-                        content=out, output_path=output, dir=os.path.relpath(template_path, template))
+                        content=out, output_path=output,
+                        dir=os.path.relpath(template_path, template))
         else:
             out = Template(template, verbose, data, no_trim_blocks,
                            no_lstrip_blocks).get_rendered_template()
