@@ -1,15 +1,19 @@
+"""
+Utility
+"""
 import os
+import sys
 import requests
 import yaml
-import sys
+
+from colors import green
 
 from .validators import validate_url, validate_is_file
 from .exceptions import InvalidDataType
 
-from colors import green
-
 
 def print_verbose(message):
+    """Print verbose output to stdout"""
     if message['verbose']:
         separator = green(f'{"-" * 10}')
         print(separator, message['title'], separator)
@@ -17,10 +21,17 @@ def print_verbose(message):
 
 
 def load_yaml(data):
+    """Load YAML / JSON"""
     return yaml.load(data, Loader=yaml.FullLoader)
 
 
 def output_template(content, output_path, dir=None):
+    """Print template to stdout by default
+    If output_path is not None, write the template content
+    to the path that was specified.
+    If dir is not None, copy the template directory with all
+    templates applied.
+    """
     if content is not None:
         if output_path is None:
             print(content)
@@ -35,14 +46,17 @@ def output_template(content, output_path, dir=None):
 
 
 def input_handler(data):
+    """Handle & validate input"""
+    ih_content = None
     if data == '-':
-        return sys.stdin.read()
+        ih_content = sys.stdin.read()
     elif validate_url(data):
-        r = requests.get(data)
-        if not r.raise_for_status():
-            return r.text
+        response = requests.get(data)
+        if not response.raise_for_status():
+            ih_content = response.text
     elif validate_is_file(data):
         with open(data, 'r') as input_data_file:
-            return input_data_file.read()
+            ih_content = input_data_file.read()
     else:
         raise InvalidDataType()
+    return ih_content
