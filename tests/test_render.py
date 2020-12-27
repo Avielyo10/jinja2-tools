@@ -136,3 +136,10 @@ def test_invalid_data_type():
         shutil.rmtree(test_dir)
     except OSError:
         pass
+
+
+def test_render_with_bad_url():
+    runner = CliRunner()
+    result = runner.invoke(
+        jinja, ['render', '-d', DATA_URL+'/bla', '-t', TEMPLATE_URL])
+    assert result.exit_code != 0

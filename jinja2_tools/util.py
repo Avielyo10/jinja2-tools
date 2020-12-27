@@ -39,7 +39,7 @@ def input_handler(data):
         return sys.stdin.read()
     elif validate_url(data):
         r = requests.get(data)
-        if r.status_code < 400:
+        if not r.raise_for_status():
             return r.text
     elif validate_is_file(data):
         with open(data, 'r') as input_data_file:
