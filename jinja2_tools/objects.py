@@ -1,47 +1,11 @@
 import json
-import os
-import requests
-import validators
-import yaml
-import sys
 
 from .exceptions import InvalidDataType
-from colors import red, green
+from .validators import validate_json
+from .util import print_verbose, input_handler, load_yaml
+
+from colors import red
 from jinja2 import Template as Jinja2_template, exceptions
-
-
-def print_verbose(message):
-    if message['verbose']:
-        separator = green(f'{"-" * 10}')
-        print(separator, message['title'], separator)
-        print(green(message['content']), "\n")
-
-
-def load_yaml(data):
-    return yaml.load(data, Loader=yaml.FullLoader)
-
-
-def validate_json(j):
-    try:
-        ans = json.loads(j)
-    except json.decoder.JSONDecodeError:
-        return j
-    else:
-        return ans
-
-
-def input_handler(data):
-    if data == '-':
-        return sys.stdin.read()
-    elif validators.url(data):
-        r = requests.get(data)
-        if r.status_code < 400:
-            return r.text
-    elif os.path.exists(data):
-        with open(data, 'r') as input_data_file:
-            return input_data_file.read()
-    else:
-        raise InvalidDataType()
 
 
 class Base:
@@ -56,7 +20,6 @@ class ExtraVar(Base):
         self.data = dict(var.split('=') for var in self.data)
         for var in self.data:
             self.data[var] = validate_json(self.data[var])
- 
 
     def get_extra_vars(self):
         print_verbose({'title': '[ExtraVars]', 'content': json.dumps(
