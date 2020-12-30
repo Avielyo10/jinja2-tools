@@ -25,4 +25,4 @@ jobs:
           python setup.py install --prefix=$HOME/.local
       - name: test jinja
         run: |
-          pytest
+          pytest -vv -s
