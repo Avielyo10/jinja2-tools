@@ -51,13 +51,12 @@ def render(data, template, verbose, no_trim_blocks, no_lstrip_blocks, output, ex
 
     if data is not None:
         data = Data(data, verbose).get_data()
+    else:
+        data = dict()
 
     if extra_var is not None:
         extra_var = ExtraVar(extra_var, verbose).get_extra_vars()
-        if data is not None:
-            data.update(extra_var)
-        else:
-            data = extra_var
+        data.update(extra_var)
 
     if template is not None:
         options = {'no_trim_blocks': no_trim_blocks,

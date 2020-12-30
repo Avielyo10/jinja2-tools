@@ -88,12 +88,8 @@ class Template(Base):
         There is an option to render using only extra variables.
         """
         try:
-            if self.data is not None:
-                self.data.update(plugins())
-                rendered = self.template.render(self.data)
-            else:
-                rendered = self.template.render()
-            return rendered
+            self.data.update(plugins())
+            return self.template.render(self.data)
         except exceptions.UndefinedError as err:
             print(red('[ERROR]'), err.message, file=sys.stderr)
 
