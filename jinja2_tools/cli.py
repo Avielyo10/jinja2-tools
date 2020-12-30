@@ -7,6 +7,8 @@ import sys
 import traceback
 import click
 
+from jinja2 import Environment, FileSystemLoader, select_autoescape
+
 from .objects import Data, Template, ExtraVar
 from .exceptions import InvalidInput
 from .validators import validate_is_dir
@@ -60,19 +62,20 @@ def render(data, template, verbose, no_trim_blocks, no_lstrip_blocks, output, ex
     if template is not None:
         options = {'no_trim_blocks': no_trim_blocks,
                    'no_lstrip_blocks': no_lstrip_blocks}
-        if validate_is_dir(template):
-            for root, dirs, files in os.walk(template):
-                # Skip hidden directories
-                files = [file for file in files if not file[0] == '.']
-                dirs[:] = [dir for dir in dirs if not dir[0] == '.']
 
-                for file in files:
-                    template_path = os.path.join(root, file)
-                    out = Template(template_path, verbose, data,
-                                   options).get_rendered_template()
-                    output_template(
-                        content=out, output_path=output,
-                        dir=os.path.relpath(template_path, template))
+        env = Environment(
+            loader=FileSystemLoader(template),
+            autoescape=select_autoescape(['html', 'xml'])
+        )
+        if validate_is_dir(template):
+            for template_path in env.list_templates():
+                template_path = os.path.join(template, template_path)
+                out = Template(template_path, verbose, data,
+                               options).get_rendered_template()
+                output_template(
+                    content=out, output_path=output,
+                    dir=os.path.relpath(template_path, template))
         else:
-            out = Template(template, verbose, data, options).get_rendered_template()
+            out = Template(template, verbose, data,
+                           options).get_rendered_template()
             output_template(out, output)
