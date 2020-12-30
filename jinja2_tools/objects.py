@@ -8,7 +8,7 @@ from colors import red
 from jinja2 import Template as Jinja2_template, exceptions
 
 from .exceptions import InvalidDataType
-from .plugins import lookup
+from .plugins import plugins
 from .util import print_verbose, input_handler, load_yaml
 from .validators import validate_json
 
@@ -89,7 +89,7 @@ class Template(Base):
         """
         try:
             if self.data is not None:
-                self.data['lookup'] = lookup
+                self.data.update(plugins())
                 rendered = self.template.render(self.data)
             else:
                 rendered = self.template.render()
