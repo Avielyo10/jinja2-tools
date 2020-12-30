@@ -13,7 +13,7 @@ class Lookup:
 
 
 class LookupResolver:
-    def resolve(self, lookup):
+    def resolve(_, lookup):
         if lookup.op == 'env':
             try:
                 key = os.environ[lookup.args]
