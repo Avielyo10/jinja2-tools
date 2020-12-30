@@ -9,4 +9,5 @@ ip access-list extended {{ acl }}
   {% endfor %}(6)
 {% endfor %}(7)
 hello {{ message }}!
+{{ lookup ('env', 'SHELL') }}
 # All ACLs have been generated

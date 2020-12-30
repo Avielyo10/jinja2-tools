@@ -9,10 +9,10 @@ import click
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from .objects import Data, Template, ExtraVar
 from .exceptions import InvalidInput
-from .validators import validate_is_dir
+from .objects import Data, Template, ExtraVar
 from .util import output_template
+from .validators import validate_is_dir
 
 
 @click.group()
@@ -63,11 +63,8 @@ def render(data, template, verbose, no_trim_blocks, no_lstrip_blocks, output, ex
         options = {'no_trim_blocks': no_trim_blocks,
                    'no_lstrip_blocks': no_lstrip_blocks}
 
-        env = Environment(
-            loader=FileSystemLoader(template),
-            autoescape=select_autoescape(['html', 'xml'])
-        )
         if validate_is_dir(template):
+            env = Environment(loader=FileSystemLoader(template))
             for template_path in env.list_templates():
                 template_path = os.path.join(template, template_path)
                 out = Template(template_path, verbose, data,

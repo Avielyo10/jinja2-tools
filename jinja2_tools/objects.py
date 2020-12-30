@@ -8,14 +8,16 @@ from colors import red
 from jinja2 import Template as Jinja2_template, exceptions
 
 from .exceptions import InvalidDataType
-from .validators import validate_json
+from .plugins import lookup
 from .util import print_verbose, input_handler, load_yaml
+from .validators import validate_json
 
 
 class Base:
     """
     Simple base class that fits it all
     """
+
     def __init__(self, data, verbose):
         self.data = data
         self.verbose = verbose
@@ -27,6 +29,7 @@ class ExtraVar(Base):
     creating any file, this can be great for debugging or overwriting
     some variables in the data file.
     """
+
     def __init__(self, data, verbose):
         Base.__init__(self, data, verbose)
         self.data = dict(var.split('=') for var in self.data)
@@ -46,6 +49,7 @@ class Data(Base):
     """
     A class that holds the data
     """
+
     def __init__(self, data, verbose):
         Base.__init__(self, data, verbose)
 
@@ -71,6 +75,7 @@ class Template(Base):
     """
     Used to render the template using the data
     """
+
     def __init__(self, template, verbose, data, options):
         Base.__init__(self, data, verbose)
         self.template = template
@@ -84,6 +89,7 @@ class Template(Base):
         """
         try:
             if self.data is not None:
+                self.data['lookup'] = lookup
                 rendered = self.template.render(self.data)
             else:
                 rendered = self.template.render()
@@ -104,5 +110,8 @@ class Template(Base):
             print_verbose(
                 {'title': '[Template]', 'content': ih_content, 'verbose': self.verbose})
             self.template = Jinja2_template(
-                ih_content, trim_blocks=self.no_trim_blocks, lstrip_blocks=self.no_lstrip_blocks)
+                ih_content,
+                trim_blocks=self.no_trim_blocks,
+                lstrip_blocks=self.no_lstrip_blocks,
+            )
             return self.__render()

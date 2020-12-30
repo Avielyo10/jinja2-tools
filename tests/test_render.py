@@ -18,6 +18,7 @@ ip access-list extended al-hq-in
     (5)(6)
 (7)
 hello jinja!
+/usr/bin/zsh
 # All ACLs have been generated
 """
 
@@ -34,9 +35,11 @@ ip access-list extended al-hq-in
   (6)
 (7)
 hello jinja!
+/usr/bin/zsh
 # All ACLs have been generated
 """
 
+os.environ['SHELL'] = '/usr/bin/zsh'
 
 def test_simple_render():
     runner = CliRunner()
