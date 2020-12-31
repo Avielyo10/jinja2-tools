@@ -64,13 +64,13 @@ def render(data, template, verbose, no_trim_blocks, no_lstrip_blocks, output, ex
 
         if validate_is_dir(template):
             env = Environment(loader=FileSystemLoader(template))
-            for template_path in env.list_templates():
-                template_path = os.path.join(template, template_path)
+            for path in env.list_templates():
+                template_path = os.path.join(template, path)
                 out = Template(template_path, verbose, data,
                                options).get_rendered_template()
                 output_template(
                     content=out, output_path=output,
-                    dir=os.path.relpath(template_path, template))
+                    relative_path=path)
         else:
             out = Template(template, verbose, data,
                            options).get_rendered_template()

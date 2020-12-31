@@ -25,22 +25,22 @@ def load_yaml(data):
     return yaml.load(data, Loader=yaml.FullLoader)
 
 
-def output_template(content, output_path, dir=None):
+def output_template(content, output_path, relative_path=None):
     """Print template to stdout by default
     If output_path is not None, write the template content
     to the path that was specified.
-    If dir is not None, copy the template directory with all
+    If relative_path is not None, copy the template directory with all
     templates applied.
     """
     if content is not None:
         if output_path is None:
             print(content)
         else:
-            if dir is not None:
-                dir = output_path + dir
-                if dir is not os.path.exists(os.path.dirname(dir)):
-                    os.makedirs(os.path.dirname(dir), exist_ok=True)
-                output_path = dir
+            if relative_path is not None:
+                relative_path = output_path + relative_path
+                if relative_path is not os.path.exists(os.path.dirname(relative_path)):
+                    os.makedirs(os.path.dirname(relative_path), exist_ok=True)
+                output_path = relative_path
             with open(output_path, 'w+') as output_file:
                 output_file.write(content)
 
