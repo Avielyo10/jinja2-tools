@@ -7,7 +7,7 @@ import sys
 import traceback
 import click
 
-from jinja2 import Environment, FileSystemLoader, select_autoescape
+from jinja2 import Environment, FileSystemLoader
 
 from .exceptions import InvalidInput
 from .objects import Data, Template, ExtraVar

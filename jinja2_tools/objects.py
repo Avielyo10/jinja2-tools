@@ -5,7 +5,7 @@ import json
 import sys
 
 from colors import red
-from jinja2 import Template as Jinja2_template, exceptions
+from jinja2 import Template as Jinja2_template, exceptions, select_autoescape
 
 from .exceptions import InvalidDataType
 from .plugins import plugins
@@ -109,5 +109,6 @@ class Template(Base):
                 ih_content,
                 trim_blocks=self.no_trim_blocks,
                 lstrip_blocks=self.no_lstrip_blocks,
+                autoescape=select_autoescape(['html', 'xml'])
             )
             return self.__render()
