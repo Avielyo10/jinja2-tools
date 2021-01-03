@@ -97,6 +97,8 @@ def _resolve_file(lookup):
     if validate_is_file(os.path.join(current_pwd, lookup.arg)):
         with open(lookup.arg, 'r') as in_file:
             return in_file.read()
+    else:
+        raise ValueError(f'{lookup.arg} is not a file.')
 
 
 def _resolve_env(lookup):
