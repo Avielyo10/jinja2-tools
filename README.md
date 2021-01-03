@@ -39,7 +39,7 @@ Options:
 
 * Use path from the filesystem for data & template:
   ```
-  ➜ jinja render -d examples/data.yaml -t examples/template.sh
+  ➜ jinja render -d examples/data/data.yaml -t examples/templates/template.yaml
   (1)
   ip access-list extended al-hq-in
   (2)
@@ -54,7 +54,7 @@ Options:
 
 * Use stdin for data & URL for template, also disable trim blocks & lstrip blocks:
   ```
-  ➜ jinja render -d - -t https://raw.githubusercontent.com/Avielyo10/jinja2-tools/master/examples/template.sh -lb -tb < examples/data.yaml
+  ➜ jinja render -d - -t https://raw.githubusercontent.com/Avielyo10/jinja2-tools/master/examples/templates/template.yaml -lb -tb < examples/data/data.yaml
   (1)
   ip access-list extended al-hq-in
     (2)
@@ -73,7 +73,7 @@ Options:
 
 * Verbose:
   ```
-  ➜ jinja render -d examples/data.yaml -t examples/template.sh -v     
+  ➜ jinja render -d examples/data/data.yaml -t examples/templates/template.yaml -v     
   ---------- [Data] ----------
   {
     "access_lists": {
@@ -119,7 +119,7 @@ Options:
 
 * Pass the data using multiple extra vars:
   ```
-  ➜ jinja render -t examples/template.sh \
+  ➜ jinja render -t examples/templates/template.yaml \
   -e access_lists='{"al-hq-in": [{"action": "remark", "text": "Allow traffic from hq to local office"}, {"action": "permit", "src": "10.0.0.0/22", "dst": "10.100.0.0/24"}]}' \
   -e message=world \
   -v
@@ -169,15 +169,21 @@ Options:
 
 * Use directory option
   ```
-  ➜ jinja render -d examples/data.yaml -t examples/ -o test/
+  ➜ jinja render -d examples/data/data.yaml -t examples/ -o test/
   ➜ tree test/
   test/
-  ├── data.json
-  ├── data.yaml
-  └── template.sh
+  ├── config
+  │   ├── example.ini
+  │   └── example.properties
+  ├── data
+  │   ├── data.json
+  │   └── data.yaml
+  └── templates
+      ├── lookup.yaml
+      └── template.yaml
 
-  0 directories, 3 files
-  ➜ cat test/template.sh
+  3 directories, 6 files
+  ➜ cat test/templates/template.yaml
   (1)
   ip access-list extended al-hq-in
   (2)

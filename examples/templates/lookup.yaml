@@ -1,0 +1,6 @@
+lookup:
+  - {{ lookup ('env', 'SHELL') }}
+  - {{ lookup ('ini', 'user section=integration file=examples/config/example.ini') }}
+  - {{ lookup ('ini', 'user.* section=test re=true file=examples/config/example.ini') }}
+  - {{ lookup ('ini', 'user.name type=properties file=examples/config/example.properties') }}
+  - {{ lookup ('ini', 'user.* type=properties re=true file=examples/config/example.properties') }}

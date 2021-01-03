@@ -1,8 +1,11 @@
 """
 Lookup plugin
 """
+from io import StringIO
 import os
 import sys
+import re
+import configparser
 
 from colors import red
 
@@ -38,8 +41,52 @@ def get_resolver(op):
         return _resolve_env
     elif op == 'file':
         return _resolve_file
+    elif op == 'ini':
+        return _resolve_ini
     else:
         raise ValueError(op)
+
+
+def handle_ini_args(ini_args):
+    try:
+        key = ini_args[0]  # The first value in the argument is the key
+        ini_args = ini_args[1:]
+    except ValueError:
+        raise ValueError(ini_args)
+    else:
+        # Default args
+        args = {
+            'type': 'ini',
+            'file': 'jinja.ini',
+            'section': 'global',
+            're': False,
+            'default': ''
+        }
+        args['key'] = key
+        args.update(dict(arg.split('=') for arg in ini_args))
+        return args
+
+
+def _resolve_ini(lookup):
+    ini_args = handle_ini_args(lookup.arg.split(' '))
+    config_parser = configparser.ConfigParser()
+    file = ini_args['file']
+    if not validate_is_file(file):
+        raise ValueError(file)
+
+    config = StringIO()
+    if ini_args['type'] == 'properties':
+        config.write('[java_properties]\n')
+        ini_args['section'] = 'java_properties'
+
+    with open(file, 'r') as ini_file:
+        config.write(ini_file.read())
+        config.seek(0, os.SEEK_SET)
+    
+    config_parser.read_file(config)
+    if ini_args['re']:
+        return [value for key, value in config_parser.items(ini_args['section']) if re.match(ini_args['key'], key)]
+    return config_parser.get(ini_args['section'], ini_args['key'], fallback=ini_args['default'])
 
 
 def _resolve_file(lookup):
