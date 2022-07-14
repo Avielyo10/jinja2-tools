@@ -22,7 +22,7 @@ def print_verbose(message):
 
 def load_yaml(data):
     """Load YAML / JSON"""
-    return yaml.load(data, Loader=yaml.FullLoader)
+    return yaml.load(data, Loader=yaml.SafeLoader)
 
 
 def output_template(content, output_path, relative_path=None):
