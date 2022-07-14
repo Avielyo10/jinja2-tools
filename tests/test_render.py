@@ -178,7 +178,7 @@ def test_lookup():
     assert result.exit_code == 0
 
     with open('test/templates/lookup.yaml', 'r') as f:
-        out = yaml.full_load(f)
+        out = yaml.safe_load(f)
     lookup = out['lookup']
     
     assert lookup[0] == '/usr/bin/zsh'
