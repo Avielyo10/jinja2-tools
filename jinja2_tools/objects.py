@@ -3,6 +3,7 @@ Data objects
 """
 import json
 import sys
+from pprint import pformat
 
 from colors import red
 from jinja2 import Template as Jinja2_template, exceptions
@@ -40,8 +41,11 @@ class ExtraVar(Base):
         """
         A simple getter with verbose option
         """
-        print_verbose({'title': '[ExtraVars]', 'content': json.dumps(
-            self.data, indent=2), 'verbose': self.verbose})
+        print_verbose({
+            'title': '[ExtraVars]', 
+            'content': pformat(self.data), 
+            'verbose': self.verbose,
+        })
         return self.data
 
 
