@@ -8,7 +8,7 @@ with open("README.md", "r", encoding="utf-8") as readme_file:
 
 setuptools.setup(
     name="jinja2-tools",
-    version="1.0.7",
+    version="1.0.8",
     author="Aviel Yosef",
     author_email="Avielyo10@gmail.com",
     description="Use Jinja2 templates via cli",
