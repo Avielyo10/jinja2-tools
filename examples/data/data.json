@@ -12,5 +12,6 @@
       }
     ]
   },
-  "message": "jinja"
+  "message": "jinja",
+  "some_date": "2022-02-02"
 }
