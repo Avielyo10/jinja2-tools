@@ -1,7 +1,7 @@
 """
 Data objects
 """
-import json
+import yaml
 import sys
 
 from colors import red
@@ -40,7 +40,7 @@ class ExtraVar(Base):
         """
         A simple getter with verbose option
         """
-        print_verbose({'title': '[ExtraVars]', 'content': json.dumps(
+        print_verbose({'title': '[ExtraVars]', 'content': yaml.dump(
             self.data, indent=2), 'verbose': self.verbose})
         return self.data
 
@@ -66,7 +66,7 @@ class Data(Base):
             sys.exit(128)
         else:
             self.data = load_yaml(ih_content)
-            print_verbose({'title': '[Data]', 'content': json.dumps(
+            print_verbose({'title': '[Data]', 'content': yaml.dump(
                 self.data, indent=2), 'verbose': self.verbose})
             return self.data
 

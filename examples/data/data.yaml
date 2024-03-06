@@ -6,3 +6,4 @@ access_lists:
       src: 10.0.0.0/22
       dst: 10.100.0.0/24
 message: jinja
+some_date: 2022-02-02

@@ -23,6 +23,7 @@ ip access-list extended al-hq-in
     (5)(6)
 (7)
 hello jinja!
+the date is 2022-02-02
 # All ACLs have been generated
 """
 
@@ -39,6 +40,7 @@ ip access-list extended al-hq-in
   (6)
 (7)
 hello jinja!
+the date is 2022-02-02
 # All ACLs have been generated
 """
 
